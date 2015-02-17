@@ -1,0 +1,27 @@
+#define MAX_DELAY 60   //Maximum desired delay time (seconds)
+#define PULSE_ON 700   //Pulse on time (milliseconds)
+
+int potentiometer;
+int projectorPin = 3;
+int potentiometerPin = A2;
+
+void setup(){
+  pinMode(projectorPin, OUTPUT);
+  pinMode(potentiometerPin, INPUT);
+  potentiometer = analogRead(potentiometerPin);
+//  Serial.begin(9600);
+}
+
+void changeSlide(){
+  digitalWrite(projectorPin, HIGH);
+  delay(PULSE_ON);
+  digitalWrite(projectorPin, LOW);
+}
+
+void loop(){
+  long desiredDelay = (((long)(((((float)analogRead(potentiometerPin))/1023) * 60000))) / 1000) * 1000;
+  if(desiredDelay > 0) delay(desiredDelay - PULSE_ON);
+  else delay(desiredDelay);
+//  Serial.println(desiredDelay);
+  changeSlide();
+}
